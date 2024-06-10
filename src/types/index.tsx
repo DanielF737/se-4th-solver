@@ -13,6 +13,12 @@ export enum Shapes3d {
   TRILATERAL = 'TS',
 }
 
+export const doubleShapes = [
+  Shapes3d.CUBE,
+  Shapes3d.SPHERE,
+  Shapes3d.TETRAHEDRON,
+];
+
 export const mappings: Record<Shapes3d, [Shapes, Shapes]> = {
   [Shapes3d.CUBE]: [Shapes.SQUARE, Shapes.SQUARE],
   [Shapes3d.SPHERE]: [Shapes.CIRCLE, Shapes.CIRCLE],
@@ -20,7 +26,7 @@ export const mappings: Record<Shapes3d, [Shapes, Shapes]> = {
   [Shapes3d.CYLINDER]: [Shapes.CIRCLE, Shapes.SQUARE],
   [Shapes3d.CONE]: [Shapes.CIRCLE, Shapes.TRIANGLE],
   [Shapes3d.TRILATERAL]: [Shapes.TRIANGLE, Shapes.SQUARE],
-} as const;
+};
 
 export enum Side {
   LEFT = 'L',
@@ -44,6 +50,5 @@ export type Dissect = [Side, Shapes];
 
 export type Instruction = [Dissect, Dissect];
 
-export type Inside = [Shapes,Shapes,Shapes]
-export type Outside = [Shapes3d,Shapes3d,Shapes3d]
-
+export type Inside = [Shapes, Shapes, Shapes];
+export type Outside = [Shapes3d, Shapes3d, Shapes3d];

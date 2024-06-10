@@ -5,6 +5,7 @@ import {
   Outside,
   Shapes,
   Shapes3d,
+  doubleShapes,
   mappings,
   numberToSideMapping,
   sideToNumberMapping,
@@ -16,7 +17,7 @@ export function solver(inside: Inside, outside: Outside) {
     let outsideState: Outside = [...outside];
 
     while (true) {
-      const instruction = step(inside, outside);
+      const instruction = step(inside, outsideState);
 
       if (!instruction) break;
 
@@ -26,20 +27,25 @@ export function solver(inside: Inside, outside: Outside) {
 
     return instructions;
   } catch (e) {
-    return null;
+    console.error(e);
+    return [];
   }
 }
 
 function step(inside: Inside, outside: Outside): Instruction | null {
   const intstructions: Dissect[] = [];
   outside.forEach((shape3d, index) => {
-    if (mappings[shape3d].includes(inside[index])) {
+    // check if its a combo of two of the same shape - these always need to be broken up
+    if (doubleShapes.includes(shape3d)) {
+      intstructions.push([numberToSideMapping[index], mappings[shape3d][0]]);
+    } else if (mappings[shape3d].includes(inside[index])) {
       intstructions.push([numberToSideMapping[index], inside[index]]);
     }
   });
 
-  if (isInstruction(intstructions)) {
-    return intstructions;
+  const firstTwoElements = intstructions.slice(0, 2);
+  if (isInstruction(firstTwoElements)) {
+    return firstTwoElements;
   }
 
   return null;
@@ -51,7 +57,7 @@ function isInstruction(arr: Dissect[]): arr is Instruction {
 
 function applyInstruction(
   instruction: Instruction,
-  outsideState: Outside,
+  outsideState: Outside
 ): Outside {
   const arr: Outside = [...outsideState];
   const sideA = sideToNumberMapping[instruction[0][0]];
@@ -69,22 +75,55 @@ function applyInstruction(
 function update3dShape(
   shape3d: Shapes3d,
   add: Shapes,
-  subtract: Shapes,
+  subtract: Shapes
 ): Shapes3d {
-  const shapeComponents = mappings[shape3d];
-  const updatedMapping = shapeComponents
-    .filter(component => component !== subtract)
-    .concat(add);
+  const shapeComponents: [Shapes, Shapes] = [...mappings[shape3d]];
 
-  return findNewShape(updatedMapping);
+  // remove only one instance of subtract
+  removeFirstInstance(shapeComponents, subtract);
+
+  // add a single instance of add
+  shapeComponents.push(add);
+
+  return findNewShape(shapeComponents);
 }
 
-function findNewShape(shapes: Shapes[]): Shapes3d {
-  const newShape = Object.entries(mappings).find(([key, value]) =>
-    value.every(shape => shapes.includes(shape)),
-  )?.[0] as Shapes3d;
+function findNewShape(shapes: [Shapes, Shapes]): Shapes3d {
+  const newShape = Object.entries(mappings).find(([key, value]) => {
+    const ns = [...value];
+    removeFirstInstance(ns, shapes[0]);
+    removeFirstInstance(ns, shapes[1]);
+    return ns.length === 0;
+  })?.[0] as Shapes3d;
   if (!newShape) {
     throw new Error(`No shape found for ${shapes.join(', ')}`);
   }
   return newShape;
+}
+
+function removeFirstInstance<T>(arr: T[], str: T): T[] {
+  const index = arr.indexOf(str);
+  if (index !== -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
+}
+
+export function checkInvalid(inside: Inside, outside: Outside): boolean {
+  // Check that all 3 elements of inside are different
+  const uniqueInside = new Set(inside);
+  if (uniqueInside.size !== 3) return false;
+
+  // convert outside to an array of its mappings
+  const outsideArray = outside.flatMap((shape3d) => mappings[shape3d]);
+
+  // Check that each value appears exactly twice
+  const outsideCount = outsideArray.reduce(
+    (acc, curr) => {
+      acc[curr] = (acc[curr] || 0) + 1;
+      return acc;
+    },
+    {} as Record<Shapes, number>
+  );
+  return Object.values(outsideCount).every((count) => count === 2);
 }
