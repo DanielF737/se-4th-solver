@@ -11,7 +11,11 @@ import {
   sideToNumberMapping,
 } from '../types';
 
-export function solver(inside: Inside, outside: Outside) {
+export function solver(inside: Inside, outside: Outside, isValid: boolean) {
+  if (!isValid) {
+    return [];
+  }
+
   try {
     const instructions: Instruction[] = [];
     let outsideState: Outside = [...outside];

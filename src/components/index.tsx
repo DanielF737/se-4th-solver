@@ -15,13 +15,13 @@ export function Solver() {
     Shapes3d.CYLINDER,
   ]);
 
-  const result = useMemo(() => {
-    return solver(inside, outside);
-  }, [inside, outside]);
-
   const isValid = useMemo(() => {
     return checkInvalid(inside, outside);
   }, [inside, outside]);
+
+  const result = useMemo(() => {
+    return solver(inside, outside, isValid);
+  }, [inside, outside, isValid]);
 
   return (
     <Box
@@ -80,7 +80,7 @@ function InsideCell({
     <Box display="flex" gap="0.25rem" flexDirection="column">
       {Object.values(Shapes).map((s) => (
         <Button
-          sx={{ bgcolor: s === shape ? 'red' : undefined }}
+          variant={s === shape ? 'solid' : 'outlined'}
           onClick={() => setShape(s)}
         >
           {s}
@@ -128,7 +128,7 @@ function OutsideCell({
     <Box display="flex" gap="0.25rem" flexDirection="column">
       {Object.values(Shapes3d).map((s) => (
         <Button
-          sx={{ bgcolor: s === shape ? 'red' : undefined }}
+          variant={s === shape ? 'solid' : 'outlined'}
           onClick={() => setShape(s)}
         >
           {s}
@@ -165,6 +165,6 @@ function Instructions({
 
 function InstructionCell({ instruction }: { instruction: Instruction }) {
   return (
-    <Box>{`${instruction[0][0]}${instruction[0][1]} ${instruction[1][0]}${instruction[1][1]}`}</Box>
+    <Box>{`${instruction[0][0]}${instruction[0][1]} ↔ ${instruction[1][0]}${instruction[1][1]}`}</Box>
   );
 }
