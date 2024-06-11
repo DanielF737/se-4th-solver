@@ -55,7 +55,12 @@ function InsideInput({
   function setShape(index: number) {
     return (shape: Shapes) => {
       const arr: Inside = [...inside];
+      const oldShape = arr[index];
+      const existingIndex = arr.indexOf(shape);
       arr[index] = shape;
+      if (existingIndex !== -1) {
+        arr[existingIndex] = oldShape;
+      }
       setInside(arr);
     };
   }
@@ -157,25 +162,27 @@ function Instructions({
   }
 
   return (
-    <Box display="flex" flexDirection="column" gap="0.25rem">
-      {instructions.map((instruction, index) => (
-        <InstructionCell key={index} instruction={instruction} />
-      ))}
+    <>
+      <Box display="flex" flexDirection="column" gap="0.25rem">
+        {instructions.map((instruction, index) => (
+          <InstructionCell key={index} instruction={instruction} />
+        ))}
+      </Box>
       <CopyForIngame instructions={instructions} />
-    </Box>
+    </>
   );
 }
 
 function InstructionCell({ instruction }: { instruction: Instruction }) {
   return (
-    <Box>{`${instruction[0][0][0]}${instruction[0][0][1]} ↔ ${instruction[0][1][0]}${instruction[0][1][1]} - ${instruction[1]}`}</Box>
+    <Box>{`${instruction.swap[0].side}${instruction.swap[0].shape} ↔ ${instruction.swap[1].side}${instruction.swap[1].shape} - ${instruction.expectedState}`}</Box>
   );
 }
 
 function CopyForIngame({ instructions }: { instructions: Instruction[] }) {
   const stringToCopy = instructions
     .reduce((acc, curr) => {
-      return `${acc}${curr[0][0][0]}${curr[0][0][1]} ${curr[0][1][0]}${curr[0][1][1]}, `;
+      return `${acc}${curr.swap[0].side}${curr.swap[0].shape} ${curr.swap[1].side}${curr.swap[1].shape}, `;
     }, '')
     .slice(0, -2);
 

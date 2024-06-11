@@ -28,7 +28,7 @@ export function solver(inside: Inside, outside: Outside) {
       if (!swap) break;
 
       outsideState = applyInstruction(swap, outsideState);
-      instructions.push([swap, outsideState]);
+      instructions.push({ swap, expectedState: outsideState });
     }
 
     return instructions;
@@ -46,7 +46,7 @@ function step(inside: Inside, outside: Outside): Swap | null {
   outside.forEach((shape3d, index) => {
     const side = numberToSideMapping[index];
     if (doubleShapes.includes(shape3d)) {
-      intstructions.push([side, mappings[shape3d][0]]);
+      intstructions.push({ side, shape: mappings[shape3d][0] });
       sidesMoved.add(side);
     }
   });
@@ -55,7 +55,7 @@ function step(inside: Inside, outside: Outside): Swap | null {
   outside.forEach((shape3d, index) => {
     const side = numberToSideMapping[index];
     if (mappings[shape3d].includes(inside[index]) && !sidesMoved.has(side)) {
-      intstructions.push([side, inside[index]]);
+      intstructions.push({ side, shape: inside[index] });
       sidesMoved.add(side);
     }
   });
@@ -74,11 +74,11 @@ function isSwap(arr: Dissect[]): arr is Swap {
 
 function applyInstruction(instruction: Swap, outsideState: Outside): Outside {
   const arr: Outside = [...outsideState];
-  const sideA = sideToNumberMapping[instruction[0][0]];
-  const sideB = sideToNumberMapping[instruction[1][0]];
+  const sideA = sideToNumberMapping[instruction[0].side];
+  const sideB = sideToNumberMapping[instruction[1].side];
 
-  const shapeA = instruction[0][1];
-  const shapeB = instruction[1][1];
+  const shapeA = instruction[0].shape;
+  const shapeB = instruction[1].shape;
 
   arr[sideA] = update3dShape(arr[sideA], shapeB, shapeA);
   arr[sideB] = update3dShape(arr[sideB], shapeA, shapeB);

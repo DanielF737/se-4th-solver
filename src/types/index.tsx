@@ -5,8 +5,8 @@ export enum Shapes {
 }
 
 export enum Shapes3d {
-  CUBE = 'SS',
   SPHERE = 'CC',
+  CUBE = 'SS',
   TETRAHEDRON = 'TT',
   CYLINDER = 'CS',
   CONE = 'CT',
@@ -46,10 +46,10 @@ export const sideToNumberMapping: Record<Side, number> = {
   [Side.RIGHT]: 2,
 };
 
-export type Dissect = [Side, Shapes];
+export type Dissect = { side: Side; shape: Shapes };
 
 export type Swap = [Dissect, Dissect];
-export type Instruction = [Swap, Outside];
+export type Instruction = { swap: Swap; expectedState: Outside };
 
 export type Inside = [Shapes, Shapes, Shapes];
 export type Outside = [Shapes3d, Shapes3d, Shapes3d];
