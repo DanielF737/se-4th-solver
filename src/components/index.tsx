@@ -173,9 +173,11 @@ function InstructionCell({ instruction }: { instruction: Instruction }) {
 }
 
 function CopyForIngame({ instructions }: { instructions: Instruction[] }) {
-  const stringToCopy = instructions.reduce((acc, curr) => {
-    return `${acc}${curr[0][0][0]}${curr[0][0][1]} ${curr[0][1][0]}${curr[0][1][1]} `;
-  }, '');
+  const stringToCopy = instructions
+    .reduce((acc, curr) => {
+      return `${acc}${curr[0][0][0]}${curr[0][0][1]} ${curr[0][1][0]}${curr[0][1][1]}, `;
+    }, '')
+    .slice(0, -2);
 
   return (
     <Button
@@ -216,7 +218,7 @@ function HowToCell() {
         variant="outlined"
         color="primary"
         sx={{
-          p: '0.25rem',
+          p: '0.5rem',
           borderRadius: '0.25rem',
         }}
       >

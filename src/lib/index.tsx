@@ -5,6 +5,7 @@ import {
   Outside,
   Shapes,
   Shapes3d,
+  Side,
   Swap,
   doubleShapes,
   mappings,
@@ -39,12 +40,23 @@ export function solver(inside: Inside, outside: Outside) {
 
 function step(inside: Inside, outside: Outside): Swap | null {
   const intstructions: Dissect[] = [];
+  const sidesMoved = new Set<Side>();
+
+  // Deal with any doubles first
   outside.forEach((shape3d, index) => {
-    // check if its a combo of two of the same shape - these always need to be broken up
+    const side = numberToSideMapping[index];
     if (doubleShapes.includes(shape3d)) {
-      intstructions.push([numberToSideMapping[index], mappings[shape3d][0]]);
-    } else if (mappings[shape3d].includes(inside[index])) {
-      intstructions.push([numberToSideMapping[index], inside[index]]);
+      intstructions.push([side, mappings[shape3d][0]]);
+      sidesMoved.add(side);
+    }
+  });
+
+  // Deal with misplaced shapes second
+  outside.forEach((shape3d, index) => {
+    const side = numberToSideMapping[index];
+    if (mappings[shape3d].includes(inside[index]) && !sidesMoved.has(side)) {
+      intstructions.push([side, inside[index]]);
+      sidesMoved.add(side);
     }
   });
 
