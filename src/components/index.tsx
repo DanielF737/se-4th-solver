@@ -80,6 +80,7 @@ function InsideCell({
     <Box display="flex" gap="0.25rem" flexDirection="column">
       {Object.values(Shapes).map((s) => (
         <Button
+          key={s}
           variant={s === shape ? 'solid' : 'outlined'}
           onClick={() => setShape(s)}
         >
@@ -128,6 +129,7 @@ function OutsideCell({
     <Box display="flex" gap="0.25rem" flexDirection="column">
       {Object.values(Shapes3d).map((s) => (
         <Button
+          key={s}
           variant={s === shape ? 'solid' : 'outlined'}
           onClick={() => setShape(s)}
         >

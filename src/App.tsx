@@ -1,34 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {
   CssBaseline,
-  ThemeProvider,
-  extendTheme,
-  Button,
   CssVarsProvider,
   useColorScheme,
   IconButton,
 } from '@mui/joy';
-import { useMemo } from 'react';
 import { Solver } from './components';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 
 function App() {
-  const theme = useMemo(
-    () =>
-      extendTheme({
-        colorSchemes: {
-          dark: {
-            palette: {
-              mode: 'dark',
-            },
-          },
-        },
-      }),
-    []
-  );
-
   return (
     <CssVarsProvider defaultMode="dark">
       <CssBaseline />
