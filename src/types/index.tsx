@@ -48,7 +48,8 @@ export const sideToNumberMapping: Record<Side, number> = {
 
 export type Dissect = [Side, Shapes];
 
-export type Instruction = [Dissect, Dissect];
+export type Swap = [Dissect, Dissect];
+export type Instruction = [Swap, Outside];
 
 export type Inside = [Shapes, Shapes, Shapes];
 export type Outside = [Shapes3d, Shapes3d, Shapes3d];

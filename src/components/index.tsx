@@ -2,6 +2,7 @@ import { Box, Button, Sheet, Typography } from '@mui/joy';
 import { Inside, Instruction, Outside, Shapes, Shapes3d } from '../types';
 import { useMemo, useState } from 'react';
 import { checkInvalid, solver } from '../lib';
+import { ContentCopy } from '@mui/icons-material';
 
 export function Solver() {
   const [inside, setInside] = useState<Inside>([
@@ -160,13 +161,35 @@ function Instructions({
       {instructions.map((instruction, index) => (
         <InstructionCell key={index} instruction={instruction} />
       ))}
+      <CopyForIngame instructions={instructions} />
     </Box>
   );
 }
 
 function InstructionCell({ instruction }: { instruction: Instruction }) {
   return (
-    <Box>{`${instruction[0][0]}${instruction[0][1]} ↔ ${instruction[1][0]}${instruction[1][1]}`}</Box>
+    <Box>{`${instruction[0][0][0]}${instruction[0][0][1]} ↔ ${instruction[0][1][0]}${instruction[0][1][1]} - ${instruction[1]}`}</Box>
+  );
+}
+
+function CopyForIngame({ instructions }: { instructions: Instruction[] }) {
+  const stringToCopy = instructions.reduce((acc, curr) => {
+    return `${acc}${curr[0][0][0]}${curr[0][0][1]} ${curr[0][1][0]}${curr[0][1][1]} `;
+  }, '');
+
+  return (
+    <Button
+      onClick={() => {
+        try {
+          navigator.clipboard.writeText(stringToCopy);
+        } catch (err) {
+          console.error(`Failed to copy text: ${stringToCopy}`, err);
+        }
+      }}
+      endDecorator={<ContentCopy />}
+    >
+      {'Copy for ingame chat'}
+    </Button>
   );
 }
 
@@ -210,7 +233,9 @@ function HowToCell() {
         <br />
         <Typography level="body-xs">
           Dissect instructions are represented by a pair of side letter and
-          shape letter pairs, e.g LT MS = Left Triangle, Middle Square
+          shape letter pairs, e.g LT ↔ MS = Left Triangle, Middle Square. The
+          characters after represent the expected state after the disection, e.g
+          CS TT CS = Cylinder, Tetrahedron, Cylinder
         </Typography>
       </Sheet>
     </Sheet>

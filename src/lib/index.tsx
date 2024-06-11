@@ -5,6 +5,7 @@ import {
   Outside,
   Shapes,
   Shapes3d,
+  Swap,
   doubleShapes,
   mappings,
   numberToSideMapping,
@@ -21,12 +22,12 @@ export function solver(inside: Inside, outside: Outside) {
     let outsideState: Outside = [...outside];
 
     while (true) {
-      const instruction = step(inside, outsideState);
+      const swap = step(inside, outsideState);
 
-      if (!instruction) break;
+      if (!swap) break;
 
-      instructions.push(instruction);
-      outsideState = applyInstruction(instruction, outsideState);
+      outsideState = applyInstruction(swap, outsideState);
+      instructions.push([swap, outsideState]);
     }
 
     return instructions;
@@ -36,7 +37,7 @@ export function solver(inside: Inside, outside: Outside) {
   }
 }
 
-function step(inside: Inside, outside: Outside): Instruction | null {
+function step(inside: Inside, outside: Outside): Swap | null {
   const intstructions: Dissect[] = [];
   outside.forEach((shape3d, index) => {
     // check if its a combo of two of the same shape - these always need to be broken up
@@ -48,21 +49,18 @@ function step(inside: Inside, outside: Outside): Instruction | null {
   });
 
   const firstTwoElements = intstructions.slice(0, 2);
-  if (isInstruction(firstTwoElements)) {
+  if (isSwap(firstTwoElements)) {
     return firstTwoElements;
   }
 
   return null;
 }
 
-function isInstruction(arr: Dissect[]): arr is Instruction {
+function isSwap(arr: Dissect[]): arr is Swap {
   return arr.length === 2;
 }
 
-function applyInstruction(
-  instruction: Instruction,
-  outsideState: Outside
-): Outside {
+function applyInstruction(instruction: Swap, outsideState: Outside): Outside {
   const arr: Outside = [...outsideState];
   const sideA = sideToNumberMapping[instruction[0][0]];
   const sideB = sideToNumberMapping[instruction[1][0]];
