@@ -11,8 +11,8 @@ import {
   sideToNumberMapping,
 } from '../types';
 
-export function solver(inside: Inside, outside: Outside, isValid: boolean) {
-  if (!isValid) {
+export function solver(inside: Inside, outside: Outside) {
+  if (!checkInvalid(inside, outside)) {
     return [];
   }
 

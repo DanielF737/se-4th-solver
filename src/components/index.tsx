@@ -20,8 +20,8 @@ export function Solver() {
   }, [inside, outside]);
 
   const result = useMemo(() => {
-    return solver(inside, outside, isValid);
-  }, [inside, outside, isValid]);
+    return solver(inside, outside);
+  }, [inside, outside]);
 
   return (
     <Box
