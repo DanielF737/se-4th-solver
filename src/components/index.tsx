@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/joy';
+import { Box, Button, Sheet, Typography } from '@mui/joy';
 import { Inside, Instruction, Outside, Shapes, Shapes3d } from '../types';
 import { useMemo, useState } from 'react';
 import { checkInvalid, solver } from '../lib';
@@ -29,15 +29,17 @@ export function Solver() {
       display="flex"
       justifyContent="center"
       alignItems="center"
+      flexDirection="column"
+      gap="0.25rem"
     >
-      <Box>
-        {/* Input Inside */}
-        <InsideInput inside={inside} setInside={setInside} />
-        {/* Input Outside */}
-        <OutsideInput outside={outside} setOutside={setOutside} />
-        {/* Input Show Result */}
-        <Instructions instructions={result} isValid={isValid} />
-      </Box>
+      <Typography level="h1">Salvations Edge 4th Encounter Solver</Typography>
+      <HowToCell />
+      <Typography level="h2">Inside</Typography>
+      <InsideInput inside={inside} setInside={setInside} />
+      <Typography level="h2">Outside</Typography>
+      <OutsideInput outside={outside} setOutside={setOutside} />
+      <Typography level="h2">Instructions</Typography>
+      <Instructions instructions={result} isValid={isValid} />
     </Box>
   );
 }
@@ -59,7 +61,6 @@ function InsideInput({
 
   return (
     <Box>
-      <Typography>Inside</Typography>
       <Box display="flex" gap="0.5rem">
         {inside.map((shape, index) => (
           <InsideCell key={index} shape={shape} setShape={setShape(index)} />
@@ -108,7 +109,6 @@ function OutsideInput({
 
   return (
     <Box>
-      <Typography>Outside</Typography>
       <Box display="flex" gap="0.5rem">
         {outside.map((shape, index) => (
           <OutsideCell key={index} shape={shape} setShape={setShape(index)} />
@@ -157,7 +157,6 @@ function Instructions({
 
   return (
     <Box display="flex" flexDirection="column" gap="0.25rem">
-      <Typography>Instructions</Typography>
       {instructions.map((instruction, index) => (
         <InstructionCell key={index} instruction={instruction} />
       ))}
@@ -168,5 +167,52 @@ function Instructions({
 function InstructionCell({ instruction }: { instruction: Instruction }) {
   return (
     <Box>{`${instruction[0][0]}${instruction[0][1]} ↔ ${instruction[1][0]}${instruction[1][1]}`}</Box>
+  );
+}
+
+function HowToCell() {
+  return (
+    <Sheet
+      variant="soft"
+      color="primary"
+      sx={{
+        p: '1rem',
+        borderRadius: '0.25rem',
+        width: '80vw',
+        maxWidth: '40rem',
+      }}
+    >
+      <Typography level="h4">How to use this tool</Typography>
+      <Typography level="body-sm">
+        {
+          'This tool is used to solve the Salvations Edge 4th Encounter. Input the 3 symbols on the statues that the inside (alone) players see, and the 3 3d shapes that the outside (together) players see, and the tool will output the correct dissections the outside team needs to make to solve the puzzle from their perspective'
+        }
+      </Typography>
+      <br />
+      <Sheet
+        variant="outlined"
+        color="primary"
+        sx={{
+          p: '0.25rem',
+          borderRadius: '0.25rem',
+        }}
+      >
+        <Typography level="title-sm">Symbol Key</Typography>
+        <Typography level="body-xs">
+          C = Circle, S = Square, T = Triangle
+        </Typography>
+        <Typography level="body-xs">L = Left, M = Middle, R = Right</Typography>
+        <br />
+        <Typography level="body-xs">
+          3d shapes are represented by the two 2d shapes that are used to create
+          them, e.g CT = Circle Triangle = Cone
+        </Typography>
+        <br />
+        <Typography level="body-xs">
+          Dissect instructions are represented by a pair of side letter and
+          shape letter pairs, e.g LT MS = Left Triangle, Middle Square
+        </Typography>
+      </Sheet>
+    </Sheet>
   );
 }
