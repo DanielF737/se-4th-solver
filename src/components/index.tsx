@@ -38,7 +38,9 @@ export function Solver() {
       flexDirection="column"
       gap="0.25rem"
     >
-      <Typography level="h1">Salvations Edge 4th Encounter Solver</Typography>
+      <Typography level="h1">
+        {'Salvations Edge Verity (4th) Encounter Solver'}
+      </Typography>
       <HowToCell />
       <Typography level="h2">Inside</Typography>
       <InsideInput inside={inside} setInside={setInside} />
