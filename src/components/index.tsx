@@ -2,7 +2,12 @@ import { Box, Button, Sheet, Typography } from '@mui/joy';
 import { Inside, Instruction, Outside, Shapes, Shapes3d } from '../types';
 import { useMemo, useState } from 'react';
 import { checkInvalid, solver } from '../lib';
-import { ContentCopy } from '@mui/icons-material';
+import {
+  ContentCopy,
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+} from '@mui/icons-material';
+import { ShapeToImage } from '../lib/shapeToImage';
 
 export function Solver() {
   const [inside, setInside] = useState<Inside>([
@@ -91,7 +96,16 @@ function InsideCell({
           variant={s === shape ? 'solid' : 'outlined'}
           onClick={() => setShape(s)}
         >
-          {s}
+          <Box
+            display="flex"
+            gap="0.25rem"
+            alignItems="center"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            <ShapeToImage shape={s} selected={s === shape} />
+            {s}
+          </Box>
         </Button>
       ))}
     </Box>
@@ -139,7 +153,16 @@ function OutsideCell({
           variant={s === shape ? 'solid' : 'outlined'}
           onClick={() => setShape(s)}
         >
-          {s}
+          <Box
+            display="flex"
+            gap="0.25rem"
+            alignItems="center"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            <ShapeToImage shape={s} selected={s === shape} />
+            {s}
+          </Box>
         </Button>
       ))}
     </Box>
@@ -203,6 +226,8 @@ function CopyForIngame({ instructions }: { instructions: Instruction[] }) {
 }
 
 function HowToCell() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <Sheet
       variant="soft"
@@ -214,39 +239,55 @@ function HowToCell() {
         maxWidth: '40rem',
       }}
     >
-      <Typography level="h4">How to use this tool</Typography>
-      <Typography level="body-sm">
-        {
-          'This tool is used to solve the Salvations Edge 4th Encounter. Input the 3 symbols on the statues that the inside (alone) players see, and the 3 3d shapes that the outside (together) players see, and the tool will output the correct dissections the outside team needs to make to solve the puzzle from their perspective'
-        }
-      </Typography>
-      <br />
-      <Sheet
-        variant="outlined"
-        color="primary"
-        sx={{
-          p: '0.5rem',
-          borderRadius: '0.25rem',
-        }}
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
       >
-        <Typography level="title-sm">Symbol Key</Typography>
-        <Typography level="body-xs">
-          C = Circle, S = Square, T = Triangle
-        </Typography>
-        <Typography level="body-xs">L = Left, M = Middle, R = Right</Typography>
-        <br />
-        <Typography level="body-xs">
-          3d shapes are represented by the two 2d shapes that are used to create
-          them, e.g CT = Circle Triangle = Cone
-        </Typography>
-        <br />
-        <Typography level="body-xs">
-          Dissect instructions are represented by a pair of side letter and
-          shape letter pairs, e.g LT ↔ MS = Left Triangle, Middle Square. The
-          characters after represent the expected state after the disection, e.g
-          CS TT CS = Cylinder, Tetrahedron, Cylinder
-        </Typography>
-      </Sheet>
+        <Typography level="h4">How to use this tool</Typography>
+        <Box onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+        </Box>
+      </Box>
+      {isOpen ? (
+        <>
+          <Typography level="body-sm">
+            {
+              'This tool is used to solve the Salvations Edge 4th Encounter. Input the 3 symbols on the statues that the inside (alone) players see, and the 3 3d shapes that the outside (together) players see, and the tool will output the correct dissections the outside team needs to make to solve the puzzle from their perspective'
+            }
+          </Typography>
+          <br />
+          <Sheet
+            variant="outlined"
+            color="primary"
+            sx={{
+              p: '0.5rem',
+              borderRadius: '0.25rem',
+            }}
+          >
+            <Typography level="title-sm">Symbol Key</Typography>
+            <Typography level="body-xs">
+              C = Circle, S = Square, T = Triangle
+            </Typography>
+            <Typography level="body-xs">
+              L = Left, M = Middle, R = Right
+            </Typography>
+            <br />
+            <Typography level="body-xs">
+              3d shapes are represented by the two 2d shapes that are used to
+              create them, e.g CT = Circle Triangle = Cone
+            </Typography>
+            <br />
+            <Typography level="body-xs">
+              Dissect instructions are represented by a pair of side letter and
+              shape letter pairs, e.g LT ↔ MS = Left Triangle, Middle Square.
+              The characters after represent the expected state after the
+              disection, e.g CS TT CS = Cylinder, Tetrahedron, Cylinder
+            </Typography>
+          </Sheet>
+        </>
+      ) : null}
     </Sheet>
   );
 }
