@@ -2,8 +2,11 @@ const AWS = require('aws-sdk');
 const fs = require('fs');
 const path = require('path');
 
-// Configure the region
-AWS.config.update({ region: 'ap-southeast-2' });
+// Set AWS SDK credentials
+AWS.config.update({
+  region: 'ap-southeast-2',
+  credentials: new AWS.EnvironmentCredentials('AWS'),
+});
 
 // Create SSM service object
 const ssm = new AWS.SSM();
