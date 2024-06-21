@@ -104,14 +104,16 @@ export function FashionWidget() {
         config={config}
         setConfig={setConfig}
       />
-      <Card>
-        <Box display="flex" gap="0.25rem" alignItems="center">
-          <Typography whiteSpace="nowrap">Bungie Id:</Typography>
-          <BungieNameSearch search={search} setSearch={setSearch} />
-        </Box>
-        <Box display="flex" gap="0.25rem" alignItems="center">
-          <Typography whiteSpace="nowrap">Selected Player:</Typography>
-          <ProfileCard profile={profile} character={character} />
+      <Card sx={{ px: 0, gap: '0.5rem' }}>
+        <Box display="flex" flexDirection="column" gap="0.5rem" px="1rem">
+          <Box display="flex" gap="0.25rem" alignItems="center">
+            <Typography whiteSpace="nowrap">Bungie Id:</Typography>
+            <BungieNameSearch search={search} setSearch={setSearch} />
+          </Box>
+          <Box display="flex" gap="0.25rem" alignItems="center">
+            <Typography whiteSpace="nowrap">Selected Player:</Typography>
+            <ProfileCard profile={profile} character={character} />
+          </Box>
         </Box>
         <Box width="100%" display="flex" justifyContent="center">
           <ResultCard
@@ -122,7 +124,13 @@ export function FashionWidget() {
             config={config}
           />
         </Box>
-        <Box width="100%" display="flex" justifyContent="center" gap="1rem">
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          gap="1rem"
+          px="1rem"
+        >
           <Button onClick={() => setSettingsOpen(true)}>Settings</Button>
           {profile && character ? (
             <Button
@@ -300,14 +308,15 @@ function CurrentFireteam({
 }) {
   const fireteamMembers = profileTransitoryData?.partyMembers ?? [];
   return (
-    <Box width="100%">
-      <Typography>Current Fireteam:</Typography>
+    <Box maxWidth="1100px">
+      <Typography sx={{ ml: '1rem' }}>Current Fireteam:</Typography>
       <Box
         display="flex"
-        gap="1rem"
+        gap="0.25rem"
         flexWrap="wrap"
         alignItems="center"
         justifyContent="center"
+        px="0.125rem"
       >
         {fireteamMembers.length ? (
           fireteamMembers.map((member) => (
@@ -524,6 +533,15 @@ function SettingsModal({
   config: FashionCheckConfig;
   setConfig: (config: FashionCheckConfig) => void;
 }) {
+  const defaults: FashionConfig = {
+    helmet: true,
+    arms: false,
+    chest: false,
+    leg: false,
+    classItem: true,
+    exotic: true,
+  };
+
   const manifestQuery = useManifestByTable('DestinyClassDefinition');
   const manifest = manifestQuery.data;
 
@@ -583,7 +601,7 @@ function SettingsModal({
               </tr>
             </thead>
             <tbody>
-              {Object.keys(config[classes[0]]).map((key) => (
+              {Object.keys(defaults).map((key) => (
                 <tr key={key}>
                   <th>{armorLang[key as keyof FashionConfig]}</th>
                   {classes.map((classHash) => (

@@ -1,5 +1,24 @@
-import { Box, Button, IconButton, Sheet, Typography } from '@mui/joy';
-import { Inside, Instruction, Outside, Shapes, Shapes3d } from '../../types';
+import {
+  Box,
+  Button,
+  Card,
+  IconButton,
+  Modal,
+  ModalClose,
+  ModalDialog,
+  Sheet,
+  Switch,
+  Table,
+  Typography,
+} from '@mui/joy';
+import {
+  Inside,
+  Instruction,
+  Outside,
+  Shapes,
+  Shapes3d,
+  Side,
+} from '../../types';
 import { useMemo, useState } from 'react';
 import { checkInvalid, solver } from '../../lib';
 import {
@@ -9,8 +28,65 @@ import {
 } from '@mui/icons-material';
 import { ShapeToImage } from '../../lib/shapeToImage';
 import { FashionWidget } from '../Fashion Check';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 export function Solver() {
+  return (
+    <Box
+      width="100%"
+      display="flex"
+      justifyContent="flex-start"
+      alignItems="center"
+      flexDirection="column"
+      gap="1rem"
+      pb="5rem"
+    >
+      <Typography level="h1">
+        {'Salvations Edge Verity (4th) Encounter Solver'}
+      </Typography>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+        gap="1rem"
+      >
+        <Box
+          display="flex"
+          gap="1rem"
+          justifyContent="center"
+          flexWrap={{ xs: 'wrap', md: 'nowrap' }}
+        >
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="0.5rem"
+            alignItems="center"
+          >
+            <DissectionWidget />
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="0.5rem"
+            alignItems="center"
+          >
+            <Typography level="h2">Team Fashion</Typography>
+            <FashionWidget />
+          </Box>
+        </Box>
+        <HowToCell />
+      </Box>
+    </Box>
+  );
+}
+
+type DissectionConfig = {
+  abbreviatedCallouts: boolean;
+};
+
+function DissectionWidget() {
+  const [isOpen, setIsOpen] = useState(false);
   const [inside, setInside] = useState<Inside>([
     Shapes.CIRCLE,
     Shapes.TRIANGLE,
@@ -22,6 +98,13 @@ export function Solver() {
     Shapes3d.CYLINDER,
   ]);
 
+  const [config, setConfig] = useLocalStorage<DissectionConfig>(
+    'dissection-config',
+    {
+      abbreviatedCallouts: false,
+    }
+  );
+
   const isValid = useMemo(() => {
     return checkInvalid(inside, outside);
   }, [inside, outside]);
@@ -29,32 +112,33 @@ export function Solver() {
   const result = useMemo(() => {
     return solver(inside, outside);
   }, [inside, outside]);
-
   return (
-    <Box
-      width="100%"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      flexDirection="column"
-      gap="0.25rem"
-      pb="5rem"
-    >
-      <Typography level="h1">
-        {'Salvations Edge Verity (4th) Encounter Solver'}
-      </Typography>
-      <HowToCell />
-      <Typography level="h2">Inside</Typography>
-      <InsideInput inside={inside} setInside={setInside} />
-      <Typography level="h2">Outside</Typography>
-      <OutsideInput outside={outside} setOutside={setOutside} />
-      <Typography level="h2">Instructions</Typography>
-      <Instructions instructions={result} isValid={isValid} />
-      <Typography level="h2" sx={{ mt: '1rem' }}>
-        Team Fashion
-      </Typography>
-      <FashionWidget />
-    </Box>
+    <>
+      <SettingsModal
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        setConfig={setConfig}
+        config={config}
+      />
+      <Typography level="h2">Dissection Calculator</Typography>
+      <Card
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.5rem',
+          alignItems: 'center',
+          minWidth: '400px',
+        }}
+      >
+        <Typography level="h2">Inside</Typography>
+        <InsideInput inside={inside} setInside={setInside} />
+        <Typography level="h2">Outside</Typography>
+        <OutsideInput outside={outside} setOutside={setOutside} />
+        <Typography level="h2">Instructions</Typography>
+        <Instructions instructions={result} isValid={isValid} config={config} />
+        <Button onClick={() => setIsOpen(true)}>Settings</Button>
+      </Card>
+    </>
   );
 }
 
@@ -180,9 +264,11 @@ function OutsideCell({
 function Instructions({
   instructions,
   isValid,
+  config,
 }: {
   instructions: Instruction[];
   isValid: boolean;
+  config: DissectionConfig;
 }) {
   if (!isValid) {
     return <Typography>Invalid state</Typography>;
@@ -196,24 +282,95 @@ function Instructions({
     <>
       <Box display="flex" flexDirection="column" gap="0.25rem">
         {instructions.map((instruction, index) => (
-          <InstructionCell key={index} instruction={instruction} />
+          <InstructionCell
+            key={index}
+            instruction={instruction}
+            config={config}
+          />
         ))}
       </Box>
-      <CopyForIngame instructions={instructions} />
+      <CopyForIngame instructions={instructions} config={config} />
     </>
   );
 }
 
-function InstructionCell({ instruction }: { instruction: Instruction }) {
+function InstructionCell({
+  instruction,
+  config: { abbreviatedCallouts },
+}: {
+  instruction: Instruction;
+  config: DissectionConfig;
+}) {
   return (
-    <Box>{`${instruction.swap[0].side}${instruction.swap[0].shape} ↔ ${instruction.swap[1].side}${instruction.swap[1].shape} - ${instruction.expectedState}`}</Box>
+    <Box>{`${getLangForSide(instruction.swap[0].side, abbreviatedCallouts)}${getLangForShape(
+      instruction.swap[0].shape,
+      abbreviatedCallouts
+    )} ↔ ${getLangForSide(instruction.swap[1].side, abbreviatedCallouts)}${getLangForShape(
+      instruction.swap[1].shape,
+      abbreviatedCallouts
+    )} - ${instruction.expectedState}`}</Box>
   );
 }
 
-function CopyForIngame({ instructions }: { instructions: Instruction[] }) {
+const getLangForSide = (side: Side, abbreviatedCallouts: boolean) => {
+  if (abbreviatedCallouts) {
+    return side;
+  }
+
+  switch (side) {
+    case Side.LEFT:
+      return 'Left ';
+    case Side.MID:
+      return 'Middle ';
+    case Side.RIGHT:
+      return 'Right ';
+    default: {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const _exhaustiveCheck: never = side;
+      return '';
+    }
+  }
+};
+
+const getLangForShape = (shape: Shapes, abbreviatedCallouts: boolean) => {
+  if (abbreviatedCallouts) {
+    return shape;
+  }
+
+  switch (shape) {
+    case Shapes.CIRCLE:
+      return 'Circle';
+    case Shapes.SQUARE:
+      return 'Square';
+    case Shapes.TRIANGLE:
+      return 'Triangle';
+    default: {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const _exhaustiveCheck: never = shape;
+      return '';
+    }
+  }
+};
+
+function CopyForIngame({
+  instructions,
+  config: { abbreviatedCallouts },
+}: {
+  instructions: Instruction[];
+  config: DissectionConfig;
+}) {
   const stringToCopy = instructions
     .reduce((acc, curr) => {
-      return `${acc}${curr.swap[0].side}${curr.swap[0].shape} ${curr.swap[1].side}${curr.swap[1].shape}, `;
+      return `${acc}${getLangForSide(
+        curr.swap[0].side,
+        abbreviatedCallouts
+      )}${getLangForShape(
+        curr.swap[0].shape,
+        abbreviatedCallouts
+      )} ${getLangForSide(
+        curr.swap[1].side,
+        abbreviatedCallouts
+      )}${getLangForShape(curr.swap[1].shape, abbreviatedCallouts)}, `;
     }, '')
     .slice(0, -2);
 
@@ -222,6 +379,7 @@ function CopyForIngame({ instructions }: { instructions: Instruction[] }) {
       onClick={() => {
         try {
           navigator.clipboard.writeText(stringToCopy);
+          console.log(stringToCopy);
         } catch (err) {
           console.error(`Failed to copy text: ${stringToCopy}`, err);
         }
@@ -298,5 +456,84 @@ function HowToCell() {
         </>
       ) : null}
     </Sheet>
+  );
+}
+
+function SettingsModal({
+  open,
+  onClose,
+  config,
+  setConfig,
+}: {
+  open: boolean;
+  onClose: () => void;
+  config: DissectionConfig;
+  setConfig: (config: DissectionConfig) => void;
+}) {
+  const defaults: DissectionConfig = {
+    abbreviatedCallouts: false,
+  };
+
+  const lang: Record<keyof DissectionConfig, string> = {
+    abbreviatedCallouts: 'Abbreviated Callouts',
+  };
+
+  const handleChange = (key: keyof DissectionConfig, value: boolean) => {
+    setConfig({
+      ...config,
+      [key]: value,
+    });
+  };
+
+  return (
+    <Modal
+      aria-labelledby="modal-title"
+      aria-describedby="modal-desc"
+      open={open}
+      onClose={onClose}
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+    >
+      <ModalDialog maxWidth="sm" minWidth="sm">
+        <ModalClose variant="plain" sx={{ m: 1 }} />
+        <Typography
+          component="h2"
+          id="modal-title"
+          level="h4"
+          textColor="inherit"
+          fontWeight="lg"
+          mb={1}
+        >
+          Dissection Calcultor Settings
+        </Typography>
+        <Box>
+          <Table>
+            <thead>
+              <tr>
+                <th>Setting</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(defaults).map((key) => (
+                <tr key={key}>
+                  <th>{lang[key as keyof DissectionConfig]}</th>
+                  <td>
+                    <Switch
+                      checked={config[key as keyof DissectionConfig]}
+                      onChange={(e) =>
+                        handleChange(
+                          key as keyof DissectionConfig,
+                          e.target.checked
+                        )
+                      }
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Box>
+      </ModalDialog>
+    </Modal>
   );
 }
