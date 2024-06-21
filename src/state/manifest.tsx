@@ -2,9 +2,9 @@ import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import {
   AllDestinyManifestComponents,
   getDestinyManifest,
+  getDestinyManifestSlice,
 } from 'bungie-api-ts/destiny2';
 import { $http, $manifestHttp } from '../lib/destinyApiHttp';
-import { getDestinyManifestSlice } from 'bungie-api-ts/destiny2';
 
 const manifestKeys = {
   all: () => ['manifest'],

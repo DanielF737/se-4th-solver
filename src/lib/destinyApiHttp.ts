@@ -30,10 +30,9 @@ async function _$http<Return>(
   try {
     const response = await axios(axiosConfig);
     return response.data;
-  } catch (error) {
-    throw new Error(
-      (error as any).response?.data?.msg || (error as any).message
-    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    throw new Error(error.response?.data?.msg || error.message);
   }
 }
 
