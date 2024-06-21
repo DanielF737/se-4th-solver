@@ -62,7 +62,6 @@ export function FashionWidget() {
         chest: false,
         leg: false,
         classItem: true,
-        ghost: true,
         exotic: true,
       },
       [TITAN_HASH]: {
@@ -71,7 +70,6 @@ export function FashionWidget() {
         chest: false,
         leg: false,
         classItem: true,
-        ghost: true,
         exotic: true,
       },
       [HUNTER_HASH]: {
@@ -80,7 +78,6 @@ export function FashionWidget() {
         chest: false,
         leg: false,
         classItem: true,
-        ghost: true,
         exotic: true,
       },
     }
@@ -492,13 +489,13 @@ function FireteamMember({
             alt={item.displayProperties.name}
           />
         ))}
+        <BungieApiImage
+          key={ghost.displayProperties.icon}
+          path={ghost.displayProperties.icon}
+          height={100}
+          alt={ghost.displayProperties.name}
+        />
       </Box>
-      <BungieApiImage
-        key={ghost.displayProperties.icon}
-        path={ghost.displayProperties.icon}
-        height={100}
-        alt={ghost.displayProperties.name}
-      />
     </Box>
   );
 }
@@ -513,7 +510,6 @@ type FashionConfig = {
   chest: boolean;
   leg: boolean;
   classItem: boolean;
-  ghost: boolean;
   exotic: boolean;
 };
 
@@ -548,7 +544,6 @@ function SettingsModal({
     chest: 'Chest',
     leg: 'Leg',
     classItem: 'Class Item',
-    ghost: 'Ghost',
     exotic: 'Exotic',
   };
 
