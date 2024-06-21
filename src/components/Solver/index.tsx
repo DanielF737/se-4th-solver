@@ -1,13 +1,13 @@
 import { Box, Button, Sheet, Typography } from '@mui/joy';
-import { Inside, Instruction, Outside, Shapes, Shapes3d } from '../types';
+import { Inside, Instruction, Outside, Shapes, Shapes3d } from '../../types';
 import { useMemo, useState } from 'react';
-import { checkInvalid, solver } from '../lib';
+import { checkInvalid, solver } from '../../lib';
 import {
   ContentCopy,
   KeyboardArrowDown,
   KeyboardArrowUp,
 } from '@mui/icons-material';
-import { ShapeToImage } from '../lib/shapeToImage';
+import { ShapeToImage } from '../../lib/shapeToImage';
 
 export function Solver() {
   const [inside, setInside] = useState<Inside>([
