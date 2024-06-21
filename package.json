@@ -16,6 +16,7 @@
     "@types/node": "^16.18.98",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "aws-sdk": "^2.1646.0",
     "axios": "^1.7.2",
     "bungie-api-ts": "^5.1.0",
     "dotenv": "^16.4.5",
@@ -33,6 +34,7 @@
   "scripts": {
     "dev": "yarn start",
     "start": "BROWSER=none react-scripts start",
+    "prebuild": "node fetch-env.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

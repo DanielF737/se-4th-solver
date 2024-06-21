@@ -1,4 +1,4 @@
-import { Box, Button, Sheet, Typography } from '@mui/joy';
+import { Box, Button, IconButton, Sheet, Typography } from '@mui/joy';
 import { Inside, Instruction, Outside, Shapes, Shapes3d } from '../../types';
 import { useMemo, useState } from 'react';
 import { checkInvalid, solver } from '../../lib';
@@ -8,6 +8,7 @@ import {
   KeyboardArrowUp,
 } from '@mui/icons-material';
 import { ShapeToImage } from '../../lib/shapeToImage';
+import { FashionWidget } from '../Fashion Check';
 
 export function Solver() {
   const [inside, setInside] = useState<Inside>([
@@ -37,6 +38,7 @@ export function Solver() {
       alignItems="center"
       flexDirection="column"
       gap="0.25rem"
+      pb="5rem"
     >
       <Typography level="h1">
         {'Salvations Edge Verity (4th) Encounter Solver'}
@@ -48,6 +50,10 @@ export function Solver() {
       <OutsideInput outside={outside} setOutside={setOutside} />
       <Typography level="h2">Instructions</Typography>
       <Instructions instructions={result} isValid={isValid} />
+      <Typography level="h2" sx={{ mt: '1rem' }}>
+        Team Fashion
+      </Typography>
+      <FashionWidget />
     </Box>
   );
 }
@@ -246,11 +252,12 @@ function HowToCell() {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
+        onClick={() => setIsOpen(!isOpen)}
       >
         <Typography level="h4">How to use this tool</Typography>
-        <Box onClick={() => setIsOpen(!isOpen)}>
+        <IconButton onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-        </Box>
+        </IconButton>
       </Box>
       {isOpen ? (
         <>

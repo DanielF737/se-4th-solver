@@ -8,7 +8,6 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { ColorSchemeToggle } from './components/theme';
-import { FashionCheck } from './components/Fashion Check';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/queryClient';
 import { QueryParamProvider } from 'use-query-params';
@@ -31,9 +30,8 @@ function App() {
             <ColorSchemeToggle />
             <div style={{ padding: 16 }}>
               <Routes>
-                <Route path="/salv-4th-solver" element={<Solver />} />
-                <Route path="/fashion-check" element={<FashionCheck />} />
-                <Route path="/" element={<Navigate to="/salv-4th-solver" />} />
+                <Route path="/verity" element={<Solver />} />
+                <Route path="/*" element={<Navigate to="/verity" />} />
               </Routes>
             </div>
           </CssVarsProvider>
