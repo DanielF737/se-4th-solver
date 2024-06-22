@@ -30,6 +30,7 @@ import {
 import { ShapeToImage } from '../../lib/shapeToImage';
 import { FashionWidget } from '../Fashion Check';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { VerityAdUnit } from '../Ads';
 
 export function Solver() {
   return (
@@ -76,6 +77,7 @@ export function Solver() {
             <FashionWidget />
           </Box>
         </Box>
+        <VerityAdUnit />
         <HowToCell />
         <a
           href="https://forms.gle/T9PG4Lo72Tgje6Rq5"
