@@ -10,7 +10,7 @@ export function VerityAdUnit() {
 
   if (process.env.REACT_APP_ENV === 'dev') {
     return (
-      <Box bgcolor="red" width="728px" height="90px">
+      <Box bgcolor="red" maxWidth="728px" width="100%" height="90px">
         <Typography>Verity Ad Unit</Typography>
       </Box>
     );
