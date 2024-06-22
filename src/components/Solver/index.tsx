@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   IconButton,
+  Link,
   Modal,
   ModalClose,
   ModalDialog,
@@ -76,6 +77,13 @@ export function Solver() {
           </Box>
         </Box>
         <HowToCell />
+        <a
+          href="https://forms.gle/T9PG4Lo72Tgje6Rq5"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Link>Feedback? Bug reports? Feature requests? Click here!</Link>
+        </a>
       </Box>
     </Box>
   );
