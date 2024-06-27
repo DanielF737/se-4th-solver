@@ -42,7 +42,16 @@ function step(inside: Inside, outside: Outside): Swap | null {
   const intstructions: Dissect[] = [];
   const sidesMoved = new Set<Side>();
 
-  // Deal with any doubles first
+  // Deal with any triples (inner shape matches a double shape on the outside) first
+  outside.forEach((shape3d, index) => {
+    const side = numberToSideMapping[index];
+    if (doubleShapes.includes(shape3d) && shape3d.includes(inside[index])) {
+      intstructions.push({ side, shape: mappings[shape3d][0] });
+      sidesMoved.add(side);
+    }
+  });
+
+  // Deal with any doubles second
   outside.forEach((shape3d, index) => {
     const side = numberToSideMapping[index];
     if (doubleShapes.includes(shape3d)) {
@@ -51,7 +60,7 @@ function step(inside: Inside, outside: Outside): Swap | null {
     }
   });
 
-  // Deal with misplaced shapes second
+  // Deal with misplaced shapes last
   outside.forEach((shape3d, index) => {
     const side = numberToSideMapping[index];
     if (mappings[shape3d].includes(inside[index]) && !sidesMoved.has(side)) {
@@ -60,12 +69,23 @@ function step(inside: Inside, outside: Outside): Swap | null {
     }
   });
 
-  const firstTwoElements = intstructions.slice(0, 2);
+  const firstTwoElements = getSwap(intstructions);
   if (isSwap(firstTwoElements)) {
     return firstTwoElements;
   }
 
   return null;
+}
+
+function getSwap(instructions: Dissect[]): Dissect[] {
+  // Take the first element of instructions, then find the next instruction that
+  // is not the same side AND shape as the first element
+  const first = instructions[0];
+  const second = instructions.find(
+    (instruction) =>
+      instruction.side !== first.side && instruction.shape !== first.shape
+  );
+  return [first, second ?? []].flat();
 }
 
 function isSwap(arr: Dissect[]): arr is Swap {
