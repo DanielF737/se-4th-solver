@@ -45,14 +45,22 @@ export function HowToCell() {
           <Typography level="body-sm">
             {`This tool is used to solve the Salvations Edge 4th Encounter. Input the 3 symbols on the statues that the inside (alone) players see, and the 3 3d shapes that the outside (together) players see, and the tool will output the correct dissections the outside team needs to make to solve the puzzle from their perspective`}
           </Typography>
-          <img src={Dissect1} alt="Dissect1" style={{ alignSelf: 'center' }} />
+          <img
+            src={Dissect1}
+            alt="Dissect1"
+            style={{ alignSelf: 'center', maxWidth: '100%' }}
+          />
           <Typography level="body-sm">
             Dissect instructions are represented by a pair of side letter and
             shape letter pairs, e.g LT ↔ MS = Left Triangle, Middle Square. The
             characters after represent the expected state after the disection,
             e.g CS TT CS = Cylinder, Tetrahedron, Cylinder
           </Typography>
-          <img src={Dissect2} alt="Dissect2" style={{ alignSelf: 'center' }} />
+          <img
+            src={Dissect2}
+            alt="Dissect2"
+            style={{ alignSelf: 'center', maxWidth: '100%' }}
+          />
           <Typography level="body-sm">
             {`Once the instructions are generated, you can utilize the "click to
             copy" to copy them to the clipboard so they can be quickly pasted in
@@ -121,7 +129,7 @@ export function HowToCell() {
               <img
                 src={Dissect3}
                 alt="Dissect3"
-                style={{ alignSelf: 'center' }}
+                style={{ alignSelf: 'center', maxWidth: '100%' }}
               />
               <Typography level="body-xs">{`The abbreviated callouts setting allows you to toggle the display of the full callouts, or just the abbreviated ones. This also applies to the click to copy functionality. So with the toggle on, a dissection of square on left and triangle on right would be represented as "LS RT", and with the toggle off it would be "Left Square Right Triangle".`}</Typography>
             </Box>
@@ -212,15 +220,27 @@ export function HowToFashionCell() {
             and ghost shell, in order to help you make accurate callouts during
             the ghosts phase of the verity encounter`}
           </Typography>
-          <img src={Fashion1} alt="fashion1" style={{ alignSelf: 'center' }} />
+          <img
+            src={Fashion1}
+            alt="fashion1"
+            style={{ alignSelf: 'center', maxWidth: '100%' }}
+          />
           <Typography level="body-sm">
             {`Start by inputting your Bungie Id into the Bungie Id field, and the app will automatically load up your D2 profile. You should see your display name, current emblem, and current (or most recently selected) class.`}
           </Typography>
-          <img src={Fashion2} alt="fashion2" style={{ alignSelf: 'center' }} />
+          <img
+            src={Fashion2}
+            alt="fashion2"
+            style={{ alignSelf: 'center', maxWidth: '100%' }}
+          />
           <Typography level="body-sm">
             {`If you are currently in a fireteam, the app will also automatically load your current fireteam, showing their equipped armor (as per your current settings) and ghost shell. If using ornaments, there will be reflected as well.`}
           </Typography>
-          <img src={Fashion3} alt="fashion3" style={{ alignSelf: 'center' }} />
+          <img
+            src={Fashion3}
+            alt="fashion3"
+            style={{ alignSelf: 'center', maxWidth: '100%' }}
+          />
           <Typography level="body-sm">
             {`If the data is out of date (such as your fireteam has changed or the loadout of one of your fireteam members has changed), please hit the refresh button to fetch the latest data. Please note, there is a rate limit from bungie that only allows me to fetch new data every couple of minutes. There is nothing I can do to speed this up. If refreshing isnt pulling new data, wait a few minutes and try again.`}
           </Typography>
@@ -238,7 +258,7 @@ export function HowToFashionCell() {
               <img
                 src={Fashion4}
                 alt="fashion4"
-                style={{ alignSelf: 'center' }}
+                style={{ alignSelf: 'center', maxWidth: '100%' }}
               />
               <Typography level="body-xs">
                 {`The settings menu allows you to toggle what pieces of gear are shown, and can be toggled on a per class basis (to account for those hunters and their stupid cloaks 😅). Simply turn on the toggle relating to the piece of armour you wish to see, and any guardians of the given class will be shown.`}
