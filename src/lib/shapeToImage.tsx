@@ -1,14 +1,14 @@
 import { Shapes, Shapes3d } from '../types';
 
-import Square from '../assets/images/square.svg';
-import Circle from '../assets/images/circle.svg';
-import Triangle from '../assets/images/triangle.svg';
-import Sphere from '../assets/images/sphere.svg';
-import Cube from '../assets/images/cube.svg';
-import Tetrahedron from '../assets/images/tetrahedron.svg';
-import Cylinder from '../assets/images/cylinder.svg';
-import Cone from '../assets/images/cone.svg';
-import TriangularPrism from '../assets/images/triangularPrism.svg';
+import Square from '../assets/images/icons/square.svg';
+import Circle from '../assets/images/icons/circle.svg';
+import Triangle from '../assets/images/icons/triangle.svg';
+import Sphere from '../assets/images/icons/sphere.svg';
+import Cube from '../assets/images/icons/cube.svg';
+import Tetrahedron from '../assets/images/icons/tetrahedron.svg';
+import Cylinder from '../assets/images/icons/cylinder.svg';
+import Cone from '../assets/images/icons/cone.svg';
+import TriangularPrism from '../assets/images/icons/triangularPrism.svg';
 import { useColorScheme } from '@mui/joy';
 
 export function ShapeToImage({

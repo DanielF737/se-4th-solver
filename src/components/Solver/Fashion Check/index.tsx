@@ -16,10 +16,10 @@ import {
   useLinkedProfiles,
   useProfileByComponent,
   useSearchPlayer,
-} from '../../state/player';
-import { BungieApiImage } from '../../lib/bungieImage';
+} from '../../../state/player';
+import { BungieApiImage } from '../../../lib/bungieImage';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
-import { useManifestByTable } from '../../state/manifest';
+import { useManifestByTable } from '../../../state/manifest';
 import {
   DestinyCharacterComponent,
   DestinyComponentType,
@@ -33,7 +33,7 @@ import {
 } from 'bungie-api-ts/destiny2';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useLocalStorage } from '../../../hooks/useLocalStorage';
 
 const TITAN_HASH = 3655393761;
 const HUNTER_HASH = 671679327;
