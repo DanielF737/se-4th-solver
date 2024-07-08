@@ -63,7 +63,7 @@ export function DissectionWidget() {
           flexDirection: 'column',
           gap: '0.5rem',
           alignItems: 'center',
-          minWidth: '400px',
+          minWidth: '300px',
         }}
       >
         <Typography level="h2">Inside</Typography>
