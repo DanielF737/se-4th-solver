@@ -13,7 +13,6 @@ export const getLangForSide = (side: Side, abbreviatedCallouts: boolean) => {
     case Side.RIGHT:
       return 'Right ';
     default: {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const _exhaustiveCheck: never = side;
       return '';
     }
@@ -48,7 +47,6 @@ export const getLangForShape = (
     case Shapes3d.TRILATERAL:
       return 'Triangular Prism';
     default: {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const _exhaustiveCheck: never = shape;
       return '';
     }
