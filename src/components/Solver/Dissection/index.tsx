@@ -275,7 +275,6 @@ function CopyForIngame({
       onClick={() => {
         try {
           navigator.clipboard.writeText(stringToCopy);
-          console.log(stringToCopy);
         } catch (err) {
           console.error(`Failed to copy text: ${stringToCopy}`, err);
         }

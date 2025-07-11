@@ -90,7 +90,6 @@ export function FashionWidget() {
     });
 
   const handleRefresh = () => {
-    console.log('invalidate queries');
     return queryClient.invalidateQueries({
       queryKey: playerKeys.all(),
     });
@@ -464,7 +463,6 @@ function FireteamMember({
 
   const isExoticVisible = classConfig.exotic;
 
-  console.log({ itemRecord, exotic: DestinyItemSubType.Exotic });
 
   const visibleItems = Object.entries(itemRecord)
     .filter(
