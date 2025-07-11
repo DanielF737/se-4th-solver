@@ -1,0 +1,9 @@
+name = "ninjachicken737com"
+compatibility_date = "2025-07-11"
+
+[build]
+command = "npm run build"
+cwd = "."
+upload_format = "directory"
+upload_dir = "build"
+
