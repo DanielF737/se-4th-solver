@@ -21,6 +21,7 @@ function useManifestVersion() {
   return useQuery({
     queryKey: manifestKeys.version(),
     queryFn: async () => {
+      console.log(`fetching manifest version`);
       const res = await getDestinyManifest($http);
       return res;
     },
@@ -35,6 +36,7 @@ export function useManifestByTable<
   return useQuery({
     queryKey: manifestKeys.byTable(tableName),
     queryFn: async () => {
+      console.log(`fetching manifest table ${tableName}`);
       if (!destinyManifest) {
         // This should be unreachable as this funciton wont run if we dont have the manifest
         throw new Error('Destiny Manifest not available');

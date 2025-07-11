@@ -54,6 +54,7 @@ export function useSearchPlayer({ search }: { search: string }) {
       (hasPreexistingRes ? search : debouncedSearchTerm) ?? ''
     ),
     queryFn: async () => {
+      console.log(`fetching player search ${debouncedSearchTerm}`);
       const { name: displayName, code: displayNameCode } = getBungieId();
 
       const res = await searchDestinyPlayerByBungieName(
