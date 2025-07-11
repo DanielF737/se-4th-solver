@@ -33,9 +33,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "dev": "yarn start",
     "start": "BROWSER=none react-scripts start",
-    "prebuild": "node fetch-env.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -59,6 +57,5 @@
     "@types/lodash": "^4.17.5",
     "@types/react-lazy-load-image-component": "^1.6.4",
     "prettier": "^3.3.1"
-  },
-  "packageManager": "yarn@4.9.2"
+  }
 }
